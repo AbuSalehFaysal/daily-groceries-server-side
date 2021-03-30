@@ -1,10 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require('cors')
 const ObjectId = require('mongodb').ObjectId;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 const password = '8uftxmhexuEIGnTJ';
 

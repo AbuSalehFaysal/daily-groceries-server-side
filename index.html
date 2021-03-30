@@ -14,8 +14,10 @@
         <input type="text" name="name" id="" placeholder="Name">
         <input type="text" name="price" id="" placeholder="Price">
         <input type="text" name="quantity" id="" placeholder="Quantity">
+        <input type="text" name="imgURL" id="" placeholder="Products Image URL">
         <button type="submit">Add Product</button>
     </form>
+    
     <div id="products">
 
     </div>
@@ -32,7 +34,7 @@
                     container.innerHTML = '';
                     products.forEach(product => {
                         const item = document.createElement('p');
-                        item.innerHTML = `Name: ${product.name} -- Price: ${product.price} -- Quantity: ${product.quantity}
+                        item.innerHTML = `<img src="${product.imgURL}" alt=""> Name: ${product.name} -- Price: ${product.price} -- Quantity: ${product.quantity}
                         <button onclick="editProduct('${product._id}')">EDIT</button>
                         <button onclick="deleteProduct(event, '${product._id}')">DELETE</button>
                         `;
@@ -53,6 +55,7 @@
                     <input type="text" value="${data.name}" id="name">
                     <input type="text" value="${data.price}" id="price">
                     <input type="text" value="${data.quantity}" id="quantity">
+                    <input type="text" value="${data.imgURL}" id="imgURL">
                     <button onclick="updateProduct('${data._id}')">UPDATE</button>
                 `;
                 })
@@ -63,7 +66,8 @@
             const name = document.getElementById("name").value;
             const price = document.getElementById("price").value;
             const quantity = document.getElementById("quantity").value;
-            const product = { id, name, price, quantity };
+            const imgURL = document.getElementById("imgURL").value;
+            const product = { id, name, price, quantity, imgURL };
             fetch(`/update/${id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
