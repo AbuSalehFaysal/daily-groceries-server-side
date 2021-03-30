@@ -3,17 +3,18 @@ const bodyParser = require("body-parser");
 const app = express();
 const cors = require('cors')
 const ObjectId = require('mongodb').ObjectId;
+require('dotenv').config();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+const port = 5000;
+
 const password = '8uftxmhexuEIGnTJ';
 
-// mongoose.connect("mongodb+srv://AbuSalehFaysal:@cluster0.hrxvr.mongodb.net/newshub?retryWrites=true&w=majority");
-
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://AbuSalehFaysal:8uftxmhexuEIGnTJ@cluster0.hrxvr.mongodb.net/shopdb?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.hrxvr.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const productCollection = client.db("shopdb").collection("products");
@@ -72,6 +73,6 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + '/index.html')
 })
 
-app.listen(5000, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log("SERVER HAS STARTED!!!");
 })
