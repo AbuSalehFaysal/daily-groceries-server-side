@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-const port = 5000;
+const port = 7000;
 
 const password = '8uftxmhexuEIGnTJ';
 
@@ -22,9 +22,9 @@ client.connect(err => {
 
     app.get("/products", (req, res) => {
         productCollection.find({})
-        .toArray( (err, documents) => {
-            res.send(documents);
-        })
+            .toArray((err, documents) => {
+                res.send(documents);
+            })
     })
 
     app.post("/addOrder", (req, res) => {
@@ -37,11 +37,18 @@ client.connect(err => {
             })
     })
 
+    app.get("/orders", (req, res) => {
+        orderCollection.find({email: req.query.email})
+            .toArray((err, documents) => {
+                res.status(200).send(documents);
+            })
+    })
+
     app.get("/products/:id", (req, res) => {
-        productCollection.find({_id: ObjectId(req.params.id)})
-        .toArray( (err, documents) => {
-            res.send(documents[0]);
-        })
+        productCollection.find({ _id: ObjectId(req.params.id) })
+            .toArray((err, documents) => {
+                res.send(documents[0]);
+            })
     })
 
     app.post("/addProduct", (req, res) => {
@@ -59,30 +66,30 @@ client.connect(err => {
     //   client.close();
 
     app.get("/editProduct/:id", (req, res) => {
-        productCollection.find({_id: ObjectId(req.params.id)})
-        .toArray((err, documents) => {
-            res.send(documents[0]);
-        })
+        productCollection.find({ _id: ObjectId(req.params.id) })
+            .toArray((err, documents) => {
+                res.send(documents[0]);
+            })
     })
 
     app.patch("/update/:id", (req, res) => {
-        productCollection.updateOne({_id: ObjectId(req.params.id)}, 
-        {
-            $set: {name: req.body.name, price: req.body.price, quantity: req.body.quantity}
-        })
-        .then(result => {
-            // console.log(result);
-            res.send(result.modifiedCount > 0);
-        })
+        productCollection.updateOne({ _id: ObjectId(req.params.id) },
+            {
+                $set: { name: req.body.name, price: req.body.price, quantity: req.body.quantity }
+            })
+            .then(result => {
+                // console.log(result);
+                res.send(result.modifiedCount > 0);
+            })
     })
 
     app.delete('/delete/:id', (req, res) => {
         // console.log(req.params.id);
-        productCollection.deleteOne({_id: ObjectId(req.params.id)})
-        .then((result) => {
-            // console.log(result);
-            res.send(result.deletedCount > 0);
-        })
+        productCollection.deleteOne({ _id: ObjectId(req.params.id) })
+            .then((result) => {
+                // console.log(result);
+                res.send(result.deletedCount > 0);
+            })
     })
 });
 
@@ -91,6 +98,6 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + '/index.html')
 })
 
-app.listen(process.env.PORT || 5000, () => {
+app.listen(process.env.PORT || 7000, () => {
     console.log("SERVER HAS STARTED!!!");
 })
